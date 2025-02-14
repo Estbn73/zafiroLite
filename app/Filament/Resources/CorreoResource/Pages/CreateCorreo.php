@@ -6,6 +6,8 @@ use App\Filament\Resources\CorreoResource;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
 use App\Mail\EnviarCorreo;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Mail;
 
 class CreateCorreo extends CreateRecord
@@ -25,19 +27,35 @@ class CreateCorreo extends CreateRecord
         Mail::to($correo->destinatario)->send(new EnviarCorreo($correo));
 
         return $correo;
-    }
+    }   
 
     protected function getCreateFormAction(): \Filament\Actions\Action
     {
-        return parent::getCreateFormAction()->label('Enviar');
+        return parent::getCreateFormAction()
+            ->label('Enviar')
+            ->color('success');
     }
 
-    protected function getCreateAnotherAction(): \Filament\Actions\Action
+    protected function getCreateAnotherFormAction(): Action
     {
-        return parent::getCreateAnotherAction()->label('Enviarycrearotro');
+        return parent::getCreateAnotherFormAction()
+            ->label('Enviar y crear otro')
+            ->color('info');
     }
 
-    
+    protected function getCancelFormAction(): Action
+    {
+        return parent::getCancelFormAction()
+            ->label('Cancelar')
+            ->color('danger');
+    }
 
-
+    protected function sendCreatedNotification(): void
+{
+    Notification::make()
+        ->title('Correo enviado')
+        ->success()
+        ->body('El correo se ha enviado correctamente.')
+        ->send();
+}
 }

@@ -13,7 +13,8 @@ class ListCorreos extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->label('Enviar correo')
         ];
     }
 }
