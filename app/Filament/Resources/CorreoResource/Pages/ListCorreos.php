@@ -14,7 +14,8 @@ class ListCorreos extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-            ->label('Enviar correo')
+            ->label('Enviar Correo')
+            ->color('success')
         ];
     }
 }

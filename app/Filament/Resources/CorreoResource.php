@@ -3,27 +3,33 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CorreoResource\Pages;
+use App\Mail\EnviarCorreo;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Correo;
 use App\Models\EmailTemplate;
 use Filament\Forms\Form;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
-use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Actions\Action;
-use App\Mail\EnviarCorreo;
-use Illuminate\Support\Facades\Mail;
-use Filament\Forms\Components\RichEditor;
+use Filament\Tables\Filters\Filter;
+use Filament\Resources\Resource;
+
+
+
+
+
 
 class CorreoResource extends Resource
 {
     protected static ?string $model = Correo::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-envelope';
 
     public static function form(Form $form): Form
     {
@@ -73,11 +79,12 @@ class CorreoResource extends Resource
             ->columns([
                 TextColumn::make('destinatario')
                     ->label('Destinatario')
-                    ->toggleable(), // Permite mostrar/ocultar
-
+                    ->toggleable() // Permite mostrar/ocultar
+                    ->searchable(),
                 TextColumn::make('asunto')
                     ->label('Asunto')
-                    ->toggleable(),
+                    ->toggleable()
+                    ->searchable(),
 
                 TextColumn::make('created_at')
                     ->label('Fecha de Envío')
@@ -91,12 +98,59 @@ class CorreoResource extends Resource
                     ->toggleable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([]) // Aquí puedes agregar filtros si los necesitas
+            ->filters([
+                // Filtro por Destinatario (Correo)
+                // Filter::make('destinatario')
+                //     ->label('Buscar por correo'),
+                    
+
+                // Filter::make('asunto')
+                //     ->label('Buscar por asunto'),
+                    
+
+                Filter::make('created_at')
+                    ->form([
+                            
+                        DatePicker::make('created_from')->label('Desde'),
+                        DatePicker::make('created_until')->label('Hasta'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['created_from'], fn($query) => $query->whereDate('created_at', '>=', $data['created_from']))
+                            ->when($data['created_until'], fn($query) => $query->whereDate('created_at', '<=', $data['created_until']));
+                    })
+                    ->indicateUsing(function (array $data) {
+                        if ($data['created_from'] && $data['created_until']) {
+                            return 'Filtrando por fechas';
+                        }
+                        return null;
+                    }),
+
+                Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('created_from')->label('Desde'),
+                        DatePicker::make('created_until')->label('Hasta'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['created_from'], fn($query) => $query->whereDate('created_at', '>=', $data['created_from']))
+                            ->when($data['created_until'], fn($query) => $query->whereDate('created_at', '<=', $data['created_until']));
+                    })
+                    ->indicateUsing(function (array $data) {
+                        if ($data['created_from'] && $data['created_until']) {
+                            return 'Filtrando por fechas';
+                        }
+                        return null;
+                    }),
+            ])
+            ->searchable()
             ->actions([
                 Action::make('enviarCorreo')
                     ->label('Reenviar')
                     ->icon('heroicon-o-paper-airplane')
-                    ->action(fn($record) => static::enviarCorreo($record))
+                    ->action(function ($record) {
+                        Mail::to($record->destinatario)->queue(new EnviarCorreo($record));
+                    })
                     ->requiresConfirmation()
                     ->color('success'),
             ]);
