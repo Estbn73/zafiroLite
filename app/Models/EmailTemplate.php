@@ -17,5 +17,10 @@ class EmailTemplate extends Model
         'template',
         'is_global',
     ];
+
+    public function setShortAttribute($value)
+    {
+        $this->attributes['short'] = strtoupper($value);
+    }
 }
 

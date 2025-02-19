@@ -22,14 +22,22 @@ use Filament\Resources\Resource;
 
 
 
-
-
-
 class CorreoResource extends Resource
 {
     protected static ?string $model = Correo::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-envelope';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Gestión de Correos';
+    }
+    public static function getNavigationLabel(): string
+    {
+        return 'Enviar Correo';
+    }
+
+ 
 
     public static function form(Form $form): Form
     {
@@ -102,15 +110,15 @@ class CorreoResource extends Resource
                 // Filtro por Destinatario (Correo)
                 // Filter::make('destinatario')
                 //     ->label('Buscar por correo'),
-                    
+
 
                 // Filter::make('asunto')
                 //     ->label('Buscar por asunto'),
-                    
+
 
                 Filter::make('created_at')
                     ->form([
-                            
+
                         DatePicker::make('created_from')->label('Desde'),
                         DatePicker::make('created_until')->label('Hasta'),
                     ])

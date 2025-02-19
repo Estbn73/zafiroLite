@@ -14,6 +14,10 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                primary: '#1D4ED8', // Color principal
+                hover: '#2563EB',   // Color de hover personalizado
+            },
         },
     },
     plugins: [],

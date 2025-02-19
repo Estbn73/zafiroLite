@@ -1,0 +1,6 @@
+/* Cambia el color del hover en el menú lateral de Filament */
+.fi-sidebar-item a:hover {
+    background-color: #3982C2; /* Cambia esto por el color que quieras */
+    /* color: #fff; Color del texto en hover */
+}
+
