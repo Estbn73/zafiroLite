@@ -26,7 +26,9 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->passwordReset()
             ->login()
+            ->profile()
             ->colors([
                 'primary' => Color::Sky
             ])
@@ -55,4 +57,5 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ]);
     }
+
 }
