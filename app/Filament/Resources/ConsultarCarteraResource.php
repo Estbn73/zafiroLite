@@ -17,6 +17,7 @@ class ConsultarCarteraResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-magnifying-glass';
 
+    
     public static function getNavigationGroup(): ?string
     {
         return 'Operaciones';
@@ -39,7 +40,9 @@ class ConsultarCarteraResource extends Resource
                 Tables\Columns\TextColumn::make('next_task')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Tarea'),
                 Tables\Columns\TextColumn::make('last_management_type_id')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Tipificación'),
                 Tables\Columns\TextColumn::make('discount')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Foco'),
-                Tables\Columns\TextColumn::make('dni_number')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Cédula Deudor'),
+                Tables\Columns\TextColumn::make('debtor_name')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Nombre Titular'),
+                Tables\Columns\TextColumn::make('dni_number')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Cédula Deudor') ->formatStateUsing(fn ($state, $record) => 
+                "<a href='" . route('filament.admin.resources.portfolios.edit', ['record' => $record->id]) . "' class='text-blue-500 underline'>{$state}</a>")->html(), 
                 Tables\Columns\TextColumn::make('debtor_address')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Dirección'),
                 Tables\Columns\TextColumn::make('debtor_city')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Ciudad Deudor'),
                 Tables\Columns\TextColumn::make('debtor_zip_code')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Código postal'),
@@ -75,6 +78,7 @@ class ConsultarCarteraResource extends Resource
                 Tables\Columns\TextColumn::make('codebtor_email1')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Correo1 cod'),
                 Tables\Columns\TextColumn::make('codebtor_email2')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Correo2 cod'),
                 Tables\Columns\TextColumn::make('codebtor_email3')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Correo3 cod'),
+                
                 Tables\Columns\TextColumn::make('codebtor2_name')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Nombre Cod2.'),
                 Tables\Columns\TextColumn::make('codebtor2_dni_number')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Cédula Cod2.'),
                 Tables\Columns\TextColumn::make('codebtor2_address')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Dirección cod2'),
@@ -87,6 +91,7 @@ class ConsultarCarteraResource extends Resource
                 Tables\Columns\TextColumn::make('codebtor2_email1')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Correo1 cod2'),
                 Tables\Columns\TextColumn::make('codebtor2_email2')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Correo2 cod2'),
                 Tables\Columns\TextColumn::make('codebtor2_email3')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Correo3 cod2'),
+                
                 Tables\Columns\TextColumn::make('created_at')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Fecha de creación'),
                 Tables\Columns\TextColumn::make('updated_at')->toggleable()->toggleable(isToggledHiddenByDefault: false)->label('Fecha de actualización'),
 

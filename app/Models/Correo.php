@@ -9,7 +9,7 @@ class Correo extends Model
 {
     use HasFactory;
 
-    protected $table = 'correos'; // Asegura que Laravel use la tabla correcta
+    protected $table = 'correos';
 
     protected $fillable = ['destinatario', 'asunto', 'mensaje', 'adjunto'];
 }
